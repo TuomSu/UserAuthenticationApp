@@ -92,4 +92,10 @@ router.post('/login', (req, res) => {
     });
 });
 
+// log out user
+
+router.post('/logout', (req, res) => {
+  res.json({ success: true, msg: 'Logout successful' });
+});
+
 module.exports = router;
