@@ -11,14 +11,15 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Login from '@mui/icons-material/Login';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const LoginForm = ({ history }) => {
+const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
 
@@ -34,11 +35,13 @@ const LoginForm = ({ history }) => {
 
       // Handle success (redirect to the welcome-page or show a success message)
       console.log('Login successful:', response.data);
+      
       // Redirect to the welcome-page
-      navigate('/welcome');
+      navigate('/welcome',{ state: { email: response.data.user.email } });
     } catch (error) {
       // Handle login error (show error message)
       console.error('Login failed:', error.response.data.msg);
+      setErrorMessage('Invalid email or password');
     }
   };
 
@@ -62,7 +65,7 @@ const LoginForm = ({ history }) => {
           }}
         ></Box>
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+            <Login />
           </Avatar>
           <Typography component="h1" variant="h5">
       Log in
@@ -92,6 +95,7 @@ const LoginForm = ({ history }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign in
           </Button>
